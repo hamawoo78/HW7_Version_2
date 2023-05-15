@@ -1,0 +1,30 @@
+.header{
+    background-color: #f5c818cc;
+    text-align: center;
+    padding:1px;
+}
+.footer{
+    font-size: small;
+    font-weight: lighter;
+    background-color: #6e6d69cc;
+    text-align: center;
+    padding:1px;
+    color: #FFFFFF;
+}
+.footer a{
+    text-decoration: none; 
+    color:#FFFFFF
+}
+
+.select-type, .select-priority {
+    width: 200px;
+}
+ul {
+  list-style-type: decimal;
+}
+
+img{
+    width: 50%;
+}
+
+
