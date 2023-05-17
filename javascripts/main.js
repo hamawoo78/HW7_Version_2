@@ -11,7 +11,9 @@ let ItemObject = function (pTitle,pPicture, pType, pCost, pDescription, pURL) {
     this.URL = pURL;
 }
 
-itemArray.push(new ItemObject("testitem", "<img src='image/hiyoko.jpg' alt='Hiyoko'>", "Hobby", "2", "testtest", "https://www.google.com"));
+itemArray.push(new ItemObject("Handmade plate", "<img src='image/handmadeplate.jpg' alt='plate'>", "Kitchen", "6", "cute plate", "https://www.bellevuecollege.edu/"));
+itemArray.push(new ItemObject("Chick handmade crochet", "<img src='image/hiyoko.jpg' alt='Hiyoko'>", "Hobby", "2", "hand made cute item", "https://www.bellevuecollege.edu/"));
+itemArray.push(new ItemObject("Ferrari", "<img src='image/ferrari.jpg' alt='ferrari'>", "Other", "250000", "ferrari", "https://www.bellevuecollege.edu/"));
 
 
 // Function to update the item list
@@ -32,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
     itemList()
         
     // Select type button
-    let Types = ["Home", "Hobby", "Kitchin", "Other"]; // we could add the other types if we need
+    let Types = ["Home", "Hobby", "Kitchen", "Other"]; // we could add the other types if we need
     for (let i = 0; i < Types.length; i++) {
         let option = document.createElement("option");
         option.value = Types[i];
@@ -60,8 +62,28 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("URL").value = "";
       }
       
-    // clear button
+    // add function to clear button
     document.getElementById("buttonClear").addEventListener("click", clear);
+
+    document.getElementById("buttonSortType").addEventListener("click", function () {
+        itemArray.sort(dynamicSort("Type"));
+        itemList();
+        document.location.href = "index.html#AllItems";
+    });
+
+    document.getElementById("buttonSortCost").addEventListener("click", function () {
+        itemArray.sort(function(a,b){
+            return a.Cost - b.Cost;
+        });
+        itemList();
+        document.location.href = "index.html#AllItems";
+    });
+
+
+    // button on details page to view the youtube video
+    document.getElementById("buy").addEventListener("click", function () {
+        window.open(document.getElementById("oneURL").innerHTML);
+    });
 
 
     // page before show code *************************************************************************
@@ -85,12 +107,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-
+    document.getElementById("onePicture").innerHTML = item.Picture;
     document.getElementById("oneTitle").textContent = "TITLE: " + item.Title;
     document.getElementById("oneType").textContent = "TYPE: " + item.Type;
     document.getElementById("oneCost").textContent = "COST: $" + item.Cost;
     document.getElementById("oneDescription").textContent = "DESCRIPTION: " + item.Description;
-    document.getElementById("oneURL").textContent = "Shop From Here: " + item.URL;
+    document.getElementById("oneURL").textContent = item.URL;
     });
  
 // end of page before show code *************************************************************************
@@ -108,7 +130,7 @@ function itemList() {
         // use the html5 "data-parm" to encode the ID of this particular data object
         // that we are building an li from
         myLi.setAttribute("data-parm", oneItem.ID);
-        myLi.innerHTML = oneItem.Picture + "<br />" + oneItem.Title + "  " + oneItem.Type;
+        myLi.innerHTML = oneItem.Picture + "<br />" + oneItem.Title  + "<br />" + "$ " +oneItem.Cost;
         ul.appendChild(myLi);
     });
    
@@ -165,4 +187,36 @@ function itemList() {
     // updateItemList(); // Update the note list on page load
 }); 
 
+    $(document).ready(function() {
+        // Handle file selection
+        $('#picture').on('change', function(event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+    
+            reader.onload = function(event) {
+                var imageData = event.target.result;
+            };
+    
+        reader.readAsDataURL(file);
+        });
+    });
+  
+
 console.log(itemArray); // test we can delete
+
+function dynamicSort(property) {
+    var sortOrder = 1;
+
+    if (property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+
+    return function (a, b) {
+        if (sortOrder == -1) {
+            return b[property].localeCompare(a[property]);
+        } else {
+            return a[property].localeCompare(b[property]);
+        }
+    }
+}

@@ -1,8 +1,4 @@
-.header{
-    background-color: #f5c818cc;
-    text-align: center;
-    padding:1px;
-}
+
 .footer{
     font-size: small;
     font-weight: lighter;
@@ -12,7 +8,7 @@
     color: #FFFFFF;
 }
 .footer a{
-    text-decoration: none; 
+    /* text-decoration: none;  */
     color:#FFFFFF
 }
 
@@ -27,4 +23,11 @@ img{
     width: 50%;
 }
 
+.header h1{
+    text-align: center;
+}
+
+#first_menu a{
+    text-decoration: none;
+}
 

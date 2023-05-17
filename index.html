@@ -5,11 +5,16 @@
     <meta charset="UTF-8">
     <title>Online Shopping Web Page</title>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    <script src="main.js"></script>
-    <link rel="stylesheet" type="text/css" href="index.css">
+    <script src="javascripts/main.js"></script>
+    <link rel="stylesheet" type="text/css" href="stylesheets/index.css">
+
+    <link rel="stylesheet" href="stylesheets/themes/color_theme.min.css" />
+    <link rel="stylesheet" href="stylesheets/themes/jquery.mobile.icons.min.css" />
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
 
 
 </head>
@@ -22,27 +27,31 @@
     <!--   page header -->
     <div data-role="header" data-theme='a'>
         <div class = "header">
-            <h1>Welcome to our page</h1>
+            <h1>Share Your Favorite Items</h1>
         </div>
-      <div data-role="navbar" data-theme='b'>
+      <div data-role="navbar" data-theme='a'>
         <ul>
             <!-- /navbar -->
             <!-- <li><a href="#home">Home Page</a></li> -->
-            <li><a href="#AllItems" data-transition="slide">All Items</a></li>
-            <li><a href="#AddItems" data-transition="slide">Add Items</a></li>
+            <li><a href="#AllItems" data-transition="slide">Review All Items</a></li>
+            <li><a href="#AddItems" data-transition="slide">Sell Your Items</a></li>
         </ul>
       </div>
     </div>
 
     <!--   page content -->
-    <div data-role="content" data-theme='b'>
+    <div data-role="content" data-theme='a'>
       <div class="newFont">Discover Unique, Handcrafted Items from Local Artist </h2>
-      </div>
+    </div>
 
-    <ul>
-      <ol><a href="#AllItems" data-transition="slide">Buy Unique Items</a></ol>
-      <ol><a href="#AddItems" data-transition="slide">Sell your Original Items</a></ol>
-    </ul>
+    <div id = "first_menu">
+      <button>
+        <a href="#AllItems" data-transition="slide">Buy Unique Items</a>
+      </button>
+      <button>
+        <a href="#AddItems" data-transition="slide">Sell Your Original Items</a>
+      </button>
+    </div>
 
     </div>
 
@@ -62,9 +71,9 @@
   <!--   page header -->
   <div data-role="header" data-theme='a'>
       <div class = "header">
-          <h1>Welcome to our page</h1>
+        <h1>Share Your Favorite Items</h1>
       </div>
-      <div data-role="navbar" data-theme='b'>
+      <div data-role="navbar" data-theme='a'>
         <ul>
             <!-- /navbar -->
             <li><a href="#home" data-transition="slide">Home Page</a></li>
@@ -76,14 +85,15 @@
 
 
   <!--   page content -->
-  <div data-role="content" data-theme='e'>
+  <div data-role="content" data-theme='a'>
       <p> Here are All items</p>
       <p> idealy I would like to display pictures of item and title</p>
       <div id="divItemList">
           <ul id="myul"></ul>
       </div>
       <input type="button" value="Sort By Cost" id="buttonSortCost" data-inline="true" />
-      <input type="button" value="Sort By Listed Day" id="buttonSortListedDay" data-inline="true" />
+      <!-- <input type="button" value="Sort By Listed Day" id="buttonSortListedDay" data-inline="true" /> -->
+      <input type="button" value="Sort By Type" id="buttonSortType" data-inline="true" />
   </div>
 
 
@@ -102,9 +112,9 @@
     <!--   page header -->
     <div data-role="header" data-theme='a'>
         <div class = "header">
-          <h1>Welcome to our page</h1>
+          <h1>Share Your Favorite Items</h1>
         </div>
-        <div data-role="navbar" data-theme='b'>
+        <div data-role="navbar" data-theme='a'>
           <ul>
               <!-- /navbar -->
             <li><a href="#home" data-transition="slide">Home Page</a></li>
@@ -116,7 +126,7 @@
 
     <!-- page content -->
   
-    <div data-role="content" data-theme='c'>
+    <div data-role="content" data-theme='a'>
     
     <h2>Add New Items</h2>
     <br/>
@@ -124,9 +134,8 @@
     Enter Items Name<br />
     <input type="text" value="" id="title"/>
 
-    Image Picture (need more reaser to do this)<br />
-    <input type="text" value="" id="picture"/>
-    <!-- research -->
+    Image Picture<br />
+    <input type="file" value="" id="picture"/>
 
     <div class="select-type">
       <label for="select-type">Select Type</label>
@@ -172,7 +181,7 @@
       <!--   page header -->
       <div data-role="header" data-theme='a'>
         <div class = "header">
-            <h1>Welcome to My Note</h1>
+          <h1>Share Your Favorite Items</h1>
         </div>
         <div data-role="navbar" data-theme='b'>
           <ul>
@@ -185,14 +194,16 @@
       </div>
 
     <!--  content -->
-    <div data-role="content" data-theme='c'>
-        <p> Here are the details</p>
+    <div data-role="content" data-theme='a'>
+        <!-- <p> Here are the details</p> -->
+        <p id="onePicture"></p>
         <p id="oneTitle"></p>
-        <!-- <p id="onePicture"></p> -->
+        <p id="onePicture"></p>
         <p id="oneType"></p>
         <p id="oneCost"></p>
         <p id="oneDescription"></p>
-        <p id="oneURL"></p>
+        <p id="oneURL" hidden></p>
+        <input type="button" value="Buy This Item!" id="buy" />
 
         <button>
           <a href="#AllItems">Go Back</a>
