@@ -11,27 +11,32 @@ let ItemObject = function (pTitle,pPicture, pType, pCost, pDescription, pURL) {
     this.URL = pURL;
 }
 
-itemArray.push(new ItemObject("Handmade plate", "<img src='image/handmadeplate.jpg' alt='plate'>", "Kitchen", "6", "cute plate", "https://www.bellevuecollege.edu/"));
-itemArray.push(new ItemObject("Chick handmade crochet", "<img src='image/hiyoko.jpg' alt='Hiyoko'>", "Hobby", "2", "hand made cute item", "https://www.bellevuecollege.edu/"));
-itemArray.push(new ItemObject("Ferrari", "<img src='image/ferrari.jpg' alt='ferrari'>", "Other", "250000", "ferrari", "https://www.bellevuecollege.edu/"));
+// itemArray.push(new ItemObject("Handmade plate", "<img src='image/handmadeplate.jpg' alt='plate'>", "Kitchen", "6", "cute plate", "https://www.bellevuecollege.edu/"));
+// itemArray.push(new ItemObject("Chick handmade crochet", "<img src='image/hiyoko.jpg' alt='Hiyoko'>", "Hobby", "2", "hand made cute item", "https://www.bellevuecollege.edu/"));
+// itemArray.push(new ItemObject("Ferrari", "<img src='image/ferrari.jpg' alt='ferrari'>", "Other", "250000", "ferrari", "https://www.bellevuecollege.edu/"));
 
 
 // Function to update the item list
-function itemList() {
-    let ul = document.getElementById("myul");
-    ul.innerHTML = "";
-    for (let i = 0; i < itemArray.length; i++) {
-        let li = document.createElement("li");
-        li.innerHTML = "<a href='#details' data-transition='slide' data-itemid='" + i + "'><h3>" + itemArray[i].Title + "</h3></a>";
+// function itemList() {
+//     let ul = document.getElementById("myul");
 
-        ul.appendChild(li);
-    }
-    $("#myul").listview("refresh");
-}
+//     ction,
+//         // update the web page with this new data
+        
+//         ul.innerHTML = "";
+//         for (let i = 0; i < itemArray.length; i++) {
+//             let li = document.createElement("li");
+//             li.innerHTML = "<a href='#details' data-transition='slide' data-itemid='" + i + "'><h3>" + itemArray[i].Title + "</h3></a>";
+
+//             ul.appendChild(li);
+//         }
+//         $("#myul").listview("refresh");
+//     });
+// }
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    itemList()
+    // itemList()
         
     // Select type button
     let Types = ["Home", "Hobby", "Kitchen", "Other"]; // we could add the other types if we need
@@ -44,13 +49,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // add button 
     document.getElementById("buttonAdd").addEventListener("click", function () {
-        itemArray.push(new ItemObject(
+        let newItem = new ItemObject(
             document.getElementById("title").value, 
             selectedType,
             document.getElementById("cost").value, 
             document.getElementById("description").value, 
-            document.getElementById("URL").value));
-        itemList();
+            document.getElementById("URL").value);
+
+        // itemArray.push(new ItemObject(
+        //     document.getElementById("title").value, 
+        //     selectedType,
+        //     document.getElementById("cost").value, 
+        //     document.getElementById("description").value, 
+        //     document.getElementById("URL").value));
+        // itemList();
+        
+
+        $.ajax({
+            url : "/AddItems",
+            type: "POST",
+            data: JSON.stringify(newItem),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                console.log(result);
+                document.location.href = "index.html#AllItems";
+            }
+        });
+
         clear();
     });
 
@@ -71,6 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.location.href = "index.html#AllItems";
     });
 
+    // sort by cost
     document.getElementById("buttonSortCost").addEventListener("click", function () {
         itemArray.sort(function(a,b){
             return a.Cost - b.Cost;
@@ -83,6 +109,14 @@ document.addEventListener("DOMContentLoaded", function () {
     // button on details page to view the youtube video
     document.getElementById("buy").addEventListener("click", function () {
         window.open(document.getElementById("oneURL").innerHTML);
+    });
+
+
+    // item delete
+    document.getElementById("buttonDelete").addEventListener("click", function () {
+        let localParm = localStorage.getItem('parm');
+        deleteItem(localParm);
+        //document.location.href= "index.html#AllItems"
     });
 
 
@@ -122,43 +156,66 @@ function itemList() {
    let ul =document.getElementById("myul");
    ul.innerHTML = "";
    
+   $.get("/getAllItems", function(data, status){ 
+    itemArray = data; // copy returned server json data into local array
+    // now INSIDE this “call back” anonymous fun
 
-    itemArray.forEach(function (oneItem,) {   // use handy array forEach method
-        var myLi = document.createElement('li');
-        // adding a class name to each one as a way of creating a collection
-        myLi.classList.add('oneItem'); 
-        // use the html5 "data-parm" to encode the ID of this particular data object
-        // that we are building an li from
-        myLi.setAttribute("data-parm", oneItem.ID);
-        myLi.innerHTML = oneItem.Picture + "<br />" + oneItem.Title  + "<br />" + "$ " +oneItem.Cost;
-        ul.appendChild(myLi);
-    });
-   
+        itemArray.forEach(function (oneItem,) {   // use handy array forEach method
+            var myLi = document.createElement('li');
+            // adding a class name to each one as a way of creating a collection
+            myLi.classList.add('oneItem'); 
+            // use the html5 "data-parm" to encode the ID of this particular data object
+            // that we are building an li from
+            myLi.setAttribute("data-parm", oneItem.ID);
+            myLi.innerHTML = oneItem.Picture + "<br />" + oneItem.Title  + "<br />" + "$ " +oneItem.Cost;
+            ul.appendChild(myLi);
+        });
+    
 
-    // set up an event for each new li item, 
-    var liList = document.getElementsByClassName("oneItem");
-    let newItemArray = Array.from(liList);
-    newItemArray.forEach(function (element) {
-        element.addEventListener('click', function () {
-            // get that data-parm we added for THIS particular li as we loop thru them
-            var parm = this.getAttribute("data-parm");  // passing in the record.Id
-            // get our hidden <p> and save THIS ID value in the localStorage "dictionairy"
-            localStorage.setItem('parm', parm);
+        // set up an event for each new li item, 
+        var liList = document.getElementsByClassName("oneItem");
+        let newItemArray = Array.from(liList);
+        newItemArray.forEach(function (element) {
+            element.addEventListener('click', function () {
+                // get that data-parm we added for THIS particular li as we loop thru them
+                var parm = this.getAttribute("data-parm");  // passing in the record.Id
+                // get our hidden <p> and save THIS ID value in the localStorage "dictionairy"
+                localStorage.setItem('parm', parm);
        
        
        
-        // but also, to get around a "bug" in jQuery Mobile, take a snapshot of the
-        // current movie array and save it to localStorage as well.
-        let stringItemArray = JSON.stringify(itemArray); // convert array to "string"
-        localStorage.setItem('itemArray', stringItemArray);
+            // but also, to get around a "bug" in jQuery Mobile, take a snapshot of the
+            // current movie array and save it to localStorage as well.
+            let stringItemArray = JSON.stringify(itemArray); // convert array to "string"
+            localStorage.setItem('itemArray', stringItemArray);
         
-        
-        // now jump to our page that will use that one item
-        document.location.href = "index.html#details";
+            
+            // now jump to our page that will use that one item
+            document.location.href = "index.html#details";
+            });
         });
     });
-
 };
+
+function deleteItem(whitch){
+    console.log(whitch);
+    // let arrayPointer = GetArrayPointer(whitch);
+    // itemArray.splice(arrayPointer,1); 
+
+    $.ajax({
+        type: "DELETE",
+        url: "/DeleteItem/" + whitch,
+        success: function(result){
+            alert(result);
+            document.location.href = "index.html#AllItems";
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            alert("Server could not delete Item with ID " + whitch)
+            document.location.href = "index.html#AllItems";
+        }
+    });        
+}
+
 
 //   // Add event listener for clicking edit note
 // document.getElementById("buttonEdit").addEventListener("click", function () {
@@ -187,22 +244,29 @@ function itemList() {
     // updateItemList(); // Update the note list on page load
 }); 
 
-    $(document).ready(function() {
-        // Handle file selection
-        $('#picture').on('change', function(event) {
-            var file = event.target.files[0];
-            var reader = new FileReader();
-    
-            reader.onload = function(event) {
-                var imageData = event.target.result;
-            };
-    
-        reader.readAsDataURL(file);
-        });
-    });
-  
+$(document).ready(function() {
+    // Handle file selection
+    $('#picture').on('change', function(event) {
+        var file = event.target.files[0];
+        var reader = new FileReader();
 
-console.log(itemArray); // test we can delete
+        reader.onload = function(event) {
+            var imageData = event.target.result;
+        };
+
+    reader.readAsDataURL(file);
+    });
+});
+  
+$(document).bind("change", "#select-type", function (event, ui) {
+    selectedType = $('#select-type').val();
+});
+
+document.getElementById("buttonEdit").addEventListener("click", function () {
+        // do edit
+ });
+
+
 
 function dynamicSort(property) {
     var sortOrder = 1;

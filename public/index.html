@@ -10,7 +10,7 @@
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script src="javascripts/main.js"></script>
-    <link rel="stylesheet" type="text/css" href="stylesheets/index.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
 
     <link rel="stylesheet" href="stylesheets/themes/default.min.css" />
     <link rel="stylesheet" href="stylesheets/themes/jquery.mobile.icons.min.css" />
@@ -28,6 +28,10 @@
     <div data-role="header" data-theme='a'>
         <div class = "header">
             <h1>Share Your Favorite Items</h1>
+            <div class = "header_items">
+              <img class = "header_img" src="image/header.jpg" alt="header">
+              <!-- <p>Discover Unique, Handcrafted Items from Local Artist </p> -->
+            </div>
         </div>
       <div data-role="navbar" data-theme='a'>
         <ul>
@@ -41,19 +45,23 @@
 
     <!--   page content -->
     <div data-role="content" data-theme='a'>
-      <div class="newFont">Discover Unique, Handcrafted Items from Local Artist </h2>
+      
     </div>
 
     <div id = "first_menu">
       <button>
-        <a href="#AllItems" data-transition="slide">Buy Unique Items</a>
+        <a href="#AllItems" data-transition="slide">
+          <img src="image/buy.png" alt="Buy">
+        </a>
       </button>
       <button>
-        <a href="#AddItems" data-transition="slide">Sell Your Original Items</a>
+        <a href="#AddItems" data-transition="slide">
+          <img src="image/sell.png" alt="Sell">
+        </a>
       </button>
     </div>
 
-    </div>
+    
 
     <!--  page footer -->
     <div data-role="footer" data-theme='b' class = 'footer'>
@@ -87,7 +95,6 @@
   <!--   page content -->
   <div data-role="content" data-theme='a'>
       <p> Here are All items</p>
-      <p> idealy I would like to display pictures of item and title</p>
       <div id="divItemList">
           <ul id="myul"></ul>
       </div>
@@ -208,6 +215,10 @@
         <button>
           <a href="#AllItems">Go Back</a>
         </button>
+        <input type="button" value="Add Item" id="buttonEdit" data-inline="true" />
+        <input type="button" value="Add Item" id="buttonDelete" data-inline="true" />
+
+
 
         <!-- <input type="button" value="Edit Note" id="buttonEdit" data-inline="true" /> -->
     </div>
